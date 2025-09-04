@@ -8,18 +8,17 @@ import java.util.UUID;
 
 @Entity
 @Data
-public class Comments {
+@Table(name = "likes")
+public class Like {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @ManyToOne
-    private Blogs blogId;
+    @JoinColumn(name = "blog_id", nullable = false)
+    private Blog blog;
 
     @ManyToOne
-    private User userId;
-
-    private String content;
-
-    private Date createdAt;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }

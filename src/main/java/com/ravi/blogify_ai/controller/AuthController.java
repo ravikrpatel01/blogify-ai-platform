@@ -4,6 +4,7 @@ import com.ravi.blogify_ai.config.JwtProvider;
 import com.ravi.blogify_ai.entity.User;
 import com.ravi.blogify_ai.repository.UserRepository;
 import com.ravi.blogify_ai.request.LoginRequest;
+import com.ravi.blogify_ai.request.UserRequest;
 import com.ravi.blogify_ai.response.AuthResponse;
 import com.ravi.blogify_ai.service.CustomUserDetailsService;
 import com.ravi.blogify_ai.service.UserService;
@@ -35,7 +36,7 @@ public class AuthController {
     private CustomUserDetailsService customUserDetailsService;
 
     @PostMapping("/signup")
-    public ResponseEntity<AuthResponse> registerUser(@RequestBody User user) throws Exception {
+    public ResponseEntity<AuthResponse> registerUser(@RequestBody UserRequest user) throws Exception {
         User existingUser = userRepository.findByEmail(user.getEmail());
 
         if (existingUser != null) {
