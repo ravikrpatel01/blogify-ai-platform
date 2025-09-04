@@ -1,6 +1,7 @@
 package com.ravi.blogify_ai.controller;
 
 import com.ravi.blogify_ai.config.JwtProvider;
+import com.ravi.blogify_ai.dto.UserDTO;
 import com.ravi.blogify_ai.entity.User;
 import com.ravi.blogify_ai.repository.UserRepository;
 import com.ravi.blogify_ai.request.LoginRequest;
@@ -15,13 +16,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class AuthController {
     @Autowired
     private UserService userService;
@@ -55,9 +54,14 @@ public class AuthController {
 
         String token = JwtProvider.generateToken(authentication);
 
+        UserDTO userDTO = new UserDTO();
+        userDTO.setFullName(createdUser.getFullName());
+        userDTO.setEmail(createdUser.getEmail());
+
         AuthResponse response = new AuthResponse();
         response.setToken(token);
         response.setMessage("User registered successfully!");
+        response.setUser(userDTO);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
@@ -67,10 +71,16 @@ public class AuthController {
         Authentication authentication = authenticate(request.getEmail(), request.getPassword());
 
         String token = JwtProvider.generateToken(authentication);
+        User user = userRepository.findByEmail(request.getEmail());
+
+        UserDTO userDTO = new UserDTO();
+        userDTO.setFullName(user.getFullName());
+        userDTO.setEmail(user.getEmail());
 
         AuthResponse response = new AuthResponse();
         response.setToken(token);
         response.setMessage("User logged-in successfully!");
+        response.setUser(userDTO);
 
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }

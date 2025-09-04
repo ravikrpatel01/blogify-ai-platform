@@ -24,9 +24,9 @@ public class BlogController {
     @Autowired
     private UserService userService;
 
-    @PostMapping
+    @PostMapping(consumes = {"multipart/form-data"})
     public ResponseEntity<Blog> createBlog(
-            @RequestBody BlogRequest blog,
+            @ModelAttribute BlogRequest blog,
             @RequestHeader("Authorization") String jwt
     ) throws UserNotFoundException {
         User user = userService.findUserFromJwtToken(jwt);

@@ -14,6 +14,5 @@ public interface BlogService {
     public List<Blog> findAllBlogs();
     public Blog findBlog(UUID id) throws BlogNotFoundException ;
     public List<Blog> findBlogsByUser(UUID userId);
-
-    Blog updateBlog(UUID id, BlogRequest blog) throws BlogNotFoundException;
+    public Blog updateBlog(UUID id, BlogRequest blog) throws BlogNotFoundException;
 }

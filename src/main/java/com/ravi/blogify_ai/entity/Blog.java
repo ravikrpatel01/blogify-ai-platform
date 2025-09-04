@@ -34,6 +34,9 @@ public class Blog {
     @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL)
     private List<Like> likes = new ArrayList<>();
 
+    @Column(name = "cover_image")
+    private String imagePath;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 
